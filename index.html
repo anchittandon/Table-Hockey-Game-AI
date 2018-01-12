@@ -11,22 +11,22 @@
     <title>The Ultimate Table Hockey</title>
 </head>
 <body>
-    <canvas id="x" width="800" height="600"></canvas>    
+    <canvas id="gameCanvas" width="800" height="600"></canvas>    
     <script>
     var canvas;
     var canvasContext;
     var bX = 50;
     var bY = 50;
-    var bsX = 10;
-    var bsY = 4;
+    var bSpeedX = 10;
+    var bSpeedY = 4;
     var p1Score = 0;
     var p2Score = 0;
     const MAX_SCORE = 3;
-    var sws = false;
-    var pd1Y = 250;
-    var pd2Y = 250;
-    const PD_HEIGHT = 95;
-    const PD_WIDTH = 9;
+    var showingWinScreen = false;
+    var paddle1Y = 250;
+    var paddle2Y = 250;
+    const PADDLE_HEIGHT = 95;
+    const PADDLE_WIDTH = 9;
     function calculateMousePos(evt) {
         var rect = canvas.getBoundingClientRect();
         var root = document.documentElement;
@@ -38,14 +38,14 @@
         }
     }
     function handleMouseClick(evt) {
-        if(sws) {
+        if(showingWinScreen) {
             p1Score = 0;
             p2Score = 0;
-            sws = false;
+            showingWinScreen = false;
         }
     }
     window.onload = function() {
-        canvas = document.getElementById('x');
+        canvas = document.getElementById('gameCanvas');
         canvasContext = canvas.getContext('2d');
         var framesPerSecond = 30;
         setInterval(function() {
@@ -56,60 +56,37 @@
         canvas.addEventListener('mousemove', 
             function(evt){
                 var mousePos = calculateMousePos(evt);
-                pd1Y = mousePos.y - (PD_HEIGHT / 2);
+                paddle1Y = mousePos.y - (PADDLE_HEIGHT / 2);
             });
     }
     function bReset() {
         if(p1Score >= MAX_SCORE || p2Score >= MAX_SCORE){
-            sws = true;
+            showingWinScreen = true;
         }
-        bsX = -bsX
+        bSpeedX = -bSpeedX
         bX = canvas.width/2;
         bY = canvas.height/2;
     }
     function computerMovement() {
-        var paddentListener('mousedown', handleMouseClick);
-        canvas.addEventListener('mousemove', 
-            function(evt){
-                var mousePos = calculateMousePos(evt);
-                pd1Y = mousePos.y - (PD_HEIGHT / 2);
-            });
-    }
-    function bReset() {
-        if(p1Score >= MAX_SCORE || p2Score >= MAX_SCORE){
-            sws = true;
+        var paddle2YCenter = paddle2Y + PADDLE_HEIGHT / 2
+        if(paddle2YCenter < bY - 35) {
+            paddle2Y += 6;
         }
-        bsX = -bsX
-        bX = canvas.width/2;
-        bY = canvas.height/2;
-    }
-    function computerMovement() {
-        var pd2YCenter = pd2Y + PD_HEIGHT / 2
-        if(pd2YCenter < bY - 35) {
-            pd2Y += 6;
-        }
-        else if(pd2YCenter > bY + 35){
-            pd2Y -= 6; 
-        }
-    }le2YCenter = pd2Y + PD_HEIGHT / 2
-        if(pd2YCenter < bY - 35) {
-            pd2Y += 6;
-        }
-        else if(pd2YCenter > bY + 35){
-            pd2Y -= 6; 
+        else if(paddle2YCenter > bY + 35){
+            paddle2Y -= 6; 
         }
     }
     function moveEverything() {
-        if(sws) {
+        if(showingWinScreen) {
             return;
         }
         computerMovement();
-        bX += bsX;
+        bX += bSpeedX;
         if(bX < 0) {
-            if(bY > pd1Y && bY < pd1Y + PD_HEIGHT) {
-                bsX = -bsX;
-                var deltaY = bY - (pd1Y + PD_HEIGHT/2);
-                bsY = deltaY * 0.35;
+            if(bY > paddle1Y && bY < paddle1Y + PADDLE_HEIGHT) {
+                bSpeedX = -bSpeedX;
+                var deltaY = bY - (paddle1Y + PADDLE_HEIGHT/2);
+                bSpeedY = deltaY * 0.35;
             }
             else {
                 p2Score ++;
@@ -117,19 +94,19 @@
             }
         }
         if(bX > canvas.width) {
-            if(bY > pd2Y && bY < pd2Y + PD_HEIGHT) {
-                bsX = -bsX;
-                var deltaY = bY - (pd2Y + PD_HEIGHT/2);
-                bsY = deltaY * 0.35;
+            if(bY > paddle2Y && bY < paddle2Y + PADDLE_HEIGHT) {
+                bSpeedX = -bSpeedX;
+                var deltaY = bY - (paddle2Y + PADDLE_HEIGHT/2);
+                bSpeedY = deltaY * 0.35;
             }
             else {
                 p1Score ++;
                 bReset();
             }
         }
-        bY += bsY;
+        bY += bSpeedY;
         if(bY > canvas.height || bY < 0) {
-            bsY = -bsY;
+            bSpeedY = -bSpeedY;
         }
     }
     function drawNet() {
@@ -139,7 +116,7 @@
     }
     function drawEverything() {
         colorRect(0, 0, canvas.width, canvas.height, 'black');
-        if(sws) {
+        if(showingWinScreen) {
             canvasContext.fillStyle = 'white'
             if(p1Score >= MAX_SCORE){
                 canvasContext.fillText("Left Player Wins", 350, 200);
@@ -151,8 +128,8 @@
             return;
         }
         drawNet();
-        colorRect(0, pd1Y, PD_WIDTH, PD_HEIGHT, 'green');
-	colorRect(canvas.width - PD_WIDTH, pd2Y, PD_WIDTH, PD_HEIGHT, 'green');
+        colorRect(0, paddle1Y, PADDLE_WIDTH, PADDLE_HEIGHT, 'green');
+	colorRect(canvas.width - PADDLE_WIDTH, paddle2Y, PADDLE_WIDTH, PADDLE_HEIGHT, 'green');
         colorCircle(bX, bY, 10, 'red');
         canvasContext.fillText(p1Score, 100, 100);
         canvasContext.fillText(p2Score, canvas.width - 100, 100);
