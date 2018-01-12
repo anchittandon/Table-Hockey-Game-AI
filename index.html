@@ -151,7 +151,7 @@
 
     function drawEverything() {
         // draws black screen
-        colorRect(0, 0, canvas.width, canvas.height, 'black');
+        colorRect(0, 0, canvas.width, canvas.height, 'blue');
         if(showingWinScreen) {
             canvasContext.fillStyle = 'white'
             if(player1Score >= WINNING_SCORE){
@@ -165,11 +165,11 @@
         }
         drawNet();
         // draws player 1 (left) paddle
-        colorRect(0, paddle1Y, PADDLE_WIDTH, PADDLE_HEIGHT, 'white');
+        colorRect(0, paddle1Y, PADDLE_WIDTH, PADDLE_HEIGHT, 'green');
         // draws player 2 (right) paddle
-        colorRect(canvas.width - PADDLE_WIDTH, paddle2Y, PADDLE_WIDTH, PADDLE_HEIGHT, 'white');
+        colorRect(canvas.width - PADDLE_WIDTH, paddle2Y, PADDLE_WIDTH, PADDLE_HEIGHT, 'green');
         // draws ball
-        colorCircle(ballX, ballY, 10, 'white');
+        colorCircle(ballX, ballY, 10, 'red');
         // text, x, y
         canvasContext.fillText(player1Score, 100, 100);
         canvasContext.fillText(player2Score, canvas.width - 100, 100);
