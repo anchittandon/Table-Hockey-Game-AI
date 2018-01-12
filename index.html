@@ -1,5 +1,4 @@
 <!doctype html>
-
 <!--Welcome to the game of Table Hockey
 	This a webapp submitted for Microsoft code.fun.do in the year 2018
 	The major contributors are:
@@ -12,9 +11,7 @@
     <title>The Ultimate Table Hockey</title>
 </head>
 <body>
-
     <canvas id="gameCanvas" width="800" height="600"></canvas>    
-
     <script>
     var canvas;
     var canvasContext;
@@ -24,7 +21,7 @@
     var ballSpeedY = 4;
     var p1Score = 0;
     var p2Score = 0;
-    const WINNING_SCORE = 3;
+    const MAX_SCORE = 3;
     var showingWinScreen = false;
     var paddle1Y = 250;
     var paddle2Y = 250;
@@ -55,9 +52,7 @@
             moveEverything();
             drawEverything();    
         }, 1000/framesPerSecond);
-
         canvas.addEventListener('mousedown', handleMouseClick);
-
         canvas.addEventListener('mousemove', 
             function(evt){
                 var mousePos = calculateMousePos(evt);
@@ -65,7 +60,7 @@
             });
     }
     function ballReset() {
-        if(p1Score >= WINNING_SCORE || p2Score >= WINNING_SCORE){
+        if(p1Score >= MAX_SCORE || p2Score >= MAX_SCORE){
             showingWinScreen = true;
         }
         ballSpeedX = -ballSpeedX
@@ -101,7 +96,6 @@
         if(ballX > canvas.width) {
             if(ballY > paddle2Y && ballY < paddle2Y + PADDLE_HEIGHT) {
                 ballSpeedX = -ballSpeedX;
-
                 var deltaY = ballY - (paddle2Y + PADDLE_HEIGHT/2);
                 ballSpeedY = deltaY * 0.35;
             }
@@ -110,27 +104,24 @@
                 ballReset();
             }
         }
-
         ballY += ballSpeedY;
         if(ballY > canvas.height || ballY < 0) {
             ballSpeedY = -ballSpeedY;
         }
     }
-
     function drawNet() {
         for(var i=0; i < canvas.height; i+=40){
             colorRect((canvas.width / 2) - 1, i, 2, 20, 'white');
         }
     }
-
     function drawEverything() {
         colorRect(0, 0, canvas.width, canvas.height, 'black');
         if(showingWinScreen) {
             canvasContext.fillStyle = 'white'
-            if(p1Score >= WINNING_SCORE){
+            if(p1Score >= MAX_SCORE){
                 canvasContext.fillText("Left Player Wins", 350, 200);
             }
-            else if(p2Score >= WINNING_SCORE) {
+            else if(p2Score >= MAX_SCORE) {
                 canvasContext.fillText("Right Player Wins", 350, 200);
             }
             canvasContext.fillText("Click to continue", 350, 500);
@@ -143,12 +134,10 @@
         canvasContext.fillText(p1Score, 100, 100);
         canvasContext.fillText(p2Score, canvas.width - 100, 100);
     }
-
     function colorRect(leftX, topY, width, height, drawColor) {
         canvasContext.fillStyle = drawColor;
         canvasContext.fillRect(leftX, topY, width, height);
     }
-
     function colorCircle(centerX, centerY, radius, drawColor) {
         canvasContext.fillStyle = drawColor;
         canvasContext.beginPath();
@@ -156,6 +145,5 @@
         canvasContext.fill();
     }
     </script>
-    
 </body>
 </html>
