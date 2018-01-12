@@ -15,10 +15,10 @@
     <script>
     var canvas;
     var canvasContext;
-    var ballX = 50;
-    var ballY = 50;
-    var ballSpeedX = 10;
-    var ballSpeedY = 4;
+    var bX = 50;
+    var bY = 50;
+    var bSpeedX = 10;
+    var bSpeedY = 4;
     var p1Score = 0;
     var p2Score = 0;
     const MAX_SCORE = 3;
@@ -30,7 +30,7 @@
     function calculateMousePos(evt) {
         var rect = canvas.getBoundingClientRect();
         var root = document.documentElement;
-		var mouseX = evt.clientX - rect.left - root.scrollLeft;
+	var mouseX = evt.clientX - rect.left - root.scrollLeft;
         var mouseY = evt.clientY - rect.top - root.scrollTop;
         return {
             x:mouseX,
@@ -59,20 +59,20 @@
                 paddle1Y = mousePos.y - (PADDLE_HEIGHT / 2);
             });
     }
-    function ballReset() {
+    function bReset() {
         if(p1Score >= MAX_SCORE || p2Score >= MAX_SCORE){
             showingWinScreen = true;
         }
-        ballSpeedX = -ballSpeedX
-        ballX = canvas.width/2;
-        ballY = canvas.height/2;
+        bSpeedX = -bSpeedX
+        bX = canvas.width/2;
+        bY = canvas.height/2;
     }
     function computerMovement() {
         var paddle2YCenter = paddle2Y + PADDLE_HEIGHT / 2
-        if(paddle2YCenter < ballY - 35) {
+        if(paddle2YCenter < bY - 35) {
             paddle2Y += 6;
         }
-        else if(paddle2YCenter > ballY + 35){
+        else if(paddle2YCenter > bY + 35){
             paddle2Y -= 6; 
         }
     }
@@ -81,32 +81,32 @@
             return;
         }
         computerMovement();
-        ballX += ballSpeedX;
-        if(ballX < 0) {
-            if(ballY > paddle1Y && ballY < paddle1Y + PADDLE_HEIGHT) {
-                ballSpeedX = -ballSpeedX;
-                var deltaY = ballY - (paddle1Y + PADDLE_HEIGHT/2);
-                ballSpeedY = deltaY * 0.35;
+        bX += bSpeedX;
+        if(bX < 0) {
+            if(bY > paddle1Y && bY < paddle1Y + PADDLE_HEIGHT) {
+                bSpeedX = -bSpeedX;
+                var deltaY = bY - (paddle1Y + PADDLE_HEIGHT/2);
+                bSpeedY = deltaY * 0.35;
             }
             else {
                 p2Score ++;
-                ballReset();
+                bReset();
             }
         }
-        if(ballX > canvas.width) {
-            if(ballY > paddle2Y && ballY < paddle2Y + PADDLE_HEIGHT) {
-                ballSpeedX = -ballSpeedX;
-                var deltaY = ballY - (paddle2Y + PADDLE_HEIGHT/2);
-                ballSpeedY = deltaY * 0.35;
+        if(bX > canvas.width) {
+            if(bY > paddle2Y && bY < paddle2Y + PADDLE_HEIGHT) {
+                bSpeedX = -bSpeedX;
+                var deltaY = bY - (paddle2Y + PADDLE_HEIGHT/2);
+                bSpeedY = deltaY * 0.35;
             }
             else {
                 p1Score ++;
-                ballReset();
+                bReset();
             }
         }
-        ballY += ballSpeedY;
-        if(ballY > canvas.height || ballY < 0) {
-            ballSpeedY = -ballSpeedY;
+        bY += bSpeedY;
+        if(bY > canvas.height || bY < 0) {
+            bSpeedY = -bSpeedY;
         }
     }
     function drawNet() {
@@ -130,7 +130,7 @@
         drawNet();
         colorRect(0, paddle1Y, PADDLE_WIDTH, PADDLE_HEIGHT, 'green');
 	colorRect(canvas.width - PADDLE_WIDTH, paddle2Y, PADDLE_WIDTH, PADDLE_HEIGHT, 'green');
-        colorCircle(ballX, ballY, 10, 'red');
+        colorCircle(bX, bY, 10, 'red');
         canvasContext.fillText(p1Score, 100, 100);
         canvasContext.fillText(p2Score, canvas.width - 100, 100);
     }
