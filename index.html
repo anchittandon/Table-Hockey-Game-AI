@@ -11,7 +11,7 @@
     <title>The Ultimate Table Hockey</title>
 </head>
 <body>
-    <canvas id="gameCanvas" width="800" height="600"></canvas>    
+    <canvas id="x" width="800" height="600"></canvas>    
     <script>
     var canvas;
     var canvasContext;
@@ -45,7 +45,7 @@
         }
     }
     window.onload = function() {
-        canvas = document.getElementById('gameCanvas');
+        canvas = document.getElementById('x');
         canvasContext = canvas.getContext('2d');
         var framesPerSecond = 30;
         setInterval(function() {
