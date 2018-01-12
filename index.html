@@ -19,8 +19,8 @@
     var bY = 50;
     var bsX = 10;
     var bsY = 4;
-    var p1Score = 0;
-    var p2Score = 0;
+    var p1s = 0;
+    var p2s = 0;
     const MAX_SCORE = 3;
     var sws = false;
     var pd1Y = 250;
@@ -39,8 +39,8 @@
     }
     function handleMouseClick(evt) {
         if(sws) {
-            p1Score = 0;
-            p2Score = 0;
+            p1s = 0;
+            p2s = 0;
             sws = false;
         }
     }
@@ -60,7 +60,7 @@
             });
     }
     function bReset() {
-        if(p1Score >= MAX_SCORE || p2Score >= MAX_SCORE){
+        if(p1s >= MAX_SCORE || p2s >= MAX_SCORE){
             sws = true;
         }
         bsX = -bsX
@@ -89,7 +89,7 @@
                 bsY = deltaY * 0.35;
             }
             else {
-                p2Score ++;
+                p2s ++;
                 bReset();
             }
         }
@@ -100,7 +100,7 @@
                 bsY = deltaY * 0.35;
             }
             else {
-                p1Score ++;
+                p1s ++;
                 bReset();
             }
         }
@@ -118,10 +118,10 @@
         colorRect(0, 0, canvas.width, canvas.height, 'black');
         if(sws) {
             canvasContext.fillStyle = 'white'
-            if(p1Score >= MAX_SCORE){
+            if(p1s >= MAX_SCORE){
                 canvasContext.fillText("Left Player Wins", 350, 200);
             }
-            else if(p2Score >= MAX_SCORE) {
+            else if(p2s >= MAX_SCORE) {
                 canvasContext.fillText("Right Player Wins", 350, 200);
             }
             canvasContext.fillText("Click to continue", 350, 500);
@@ -131,8 +131,8 @@
         colorRect(0, pd1Y, PD_WIDTH, PD_HEIGHT, 'green');
 	colorRect(canvas.width - PD_WIDTH, pd2Y, PD_WIDTH, PD_HEIGHT, 'green');
         colorCircle(bX, bY, 10, 'red');
-        canvasContext.fillText(p1Score, 100, 100);
-        canvasContext.fillText(p2Score, canvas.width - 100, 100);
+        canvasContext.fillText(p1s, 100, 100);
+        canvasContext.fillText(p2s, canvas.width - 100, 100);
     }
     function colorRect(leftX, topY, width, height, drawColor) {
         canvasContext.fillStyle = drawColor;
